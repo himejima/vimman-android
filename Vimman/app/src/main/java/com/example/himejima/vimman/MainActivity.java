@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import android.view.View;
+import android.content.Intent;
+
 
 public class MainActivity extends Activity {
 
@@ -35,5 +38,10 @@ public class MainActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    void move() {
+        Intent intent = new Intent(this, QuestionActivity.class);
+        startActivity(intent);
     }
 }
