@@ -6,8 +6,8 @@ android {
 
     defaultConfig {
         applicationId "com.example.himejima.vimman"
-        minSdkVersion 21
-        targetSdkVersion 22
+        minSdkVersion 16
+        targetSdkVersion 16
         versionCode 1
         versionName "1.0"
     }
