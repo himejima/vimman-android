@@ -6,17 +6,42 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.example.himejima.vimman.QuestionActivityFragment">
 
-    <TextView android:text="@string/hello_world" android:layout_width="wrap_content"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView3" />
+        android:id="@+id/textView3"
+        android:layout_marginTop="37dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ボタン"
+        android:text="START"
         android:id="@+id/button2"
+        android:layout_marginTop="127dp"
         android:layout_below="@+id/textView3"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_marginTop="59dp"
+        android:width="300dp"
+        android:height="50dp"
+        android:layout_below="@+id/button2"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="72dp" />
+        android:editable="true"
+        android:enabled="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="解答"
+        android:id="@+id/button3"
+        android:layout_below="@+id/editText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="46dp" />
 
 </RelativeLayout>

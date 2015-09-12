@@ -3,15 +3,19 @@ package com.example.himejima.vimman;
 import android.app.Fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,6 +28,12 @@ import java.net.URL;
  * A placeholder fragment containing a simple view.
  */
 public class QuestionActivityFragment extends Fragment {
+    TextView mQuestionText;
+    Button btnSample;
+    Button btnSubmit;
+    EditText mAnswer;
+    String[] answers;
+    String question;
 
     public QuestionActivityFragment() {
     }
@@ -33,13 +43,39 @@ public class QuestionActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         // return inflater.inflate(R.layout.fragment_question, container, false);
         View view = inflater.inflate(R.layout.fragment_question, container, false);
-        Button btnSample = (Button) view.findViewById(R.id.button2);
+        mQuestionText = (TextView) view.findViewById(R.id.textView3);
+        btnSample = (Button) view.findViewById(R.id.button2);
+        btnSubmit = (Button) view.findViewById(R.id.button3);
+        mAnswer = (EditText) view.findViewById(R.id.editText);
+
         btnSample.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new FetchQuestionTask().execute();
             }
         });
+        btnSubmit.setVisibility(View.GONE);
+        mAnswer.setVisibility(View.GONE);
+
+        // 答え合わせ
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Boolean rightFlag = false;
+                Editable myAnswer = mAnswer.getText();
+                Log.d("input answer", myAnswer.toString());
+                for (String val : answers) {
+                    Log.d("test", val);
+                    if (myAnswer.toString().equals(val)) {
+                        rightFlag = true;
+                        break;
+                    }
+                }
+                // TODO: 結果画面への遷移
+                Log.d("result: ", rightFlag.toString());
+            }
+        });
+
         return view;
     }
 
@@ -63,15 +99,15 @@ public class QuestionActivityFragment extends Fragment {
                 for (int j = 0; j < answerArray.length(); j++) {
                     JSONObject answerObject = answerArray.getJSONObject(j);
                     String answer = answerObject.getString("content");
-                    Log.v(LOG_TAG, "Answer Entry: " + answer);
+                    // Log.v(LOG_TAG, "Answer Entry: " + answer);
                 }
 
                 resultStrs[i] = content;
             }
 
-            for (String s : resultStrs) {
-                Log.v(LOG_TAG, "Question entry: " + s);
-            }
+//            for (String s : resultStrs) {
+//                Log.v(LOG_TAG, "Question entry: " + s);
+//            }
             return resultStrs;
         }
 
@@ -132,6 +168,26 @@ public class QuestionActivityFragment extends Fragment {
             }
 
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(String[] result) {
+//            Log.d(LOG_TAG, "pass3");
+            // set question to view
+            if (result != null) {
+                for (String val : result) {
+                    Log.d(LOG_TAG, "post: " + val);
+                    // 問題をセットする
+                }
+            }
+            btnSample.setVisibility(View.GONE);
+            question = "Vimの問題です";
+            answers = new String[2];
+            answers[0] = "abc";
+            answers[1] = "xyz";
+            mQuestionText.setText(question);
+            btnSubmit.setVisibility(View.VISIBLE);
+            mAnswer.setVisibility(View.VISIBLE);
         }
     }
 }
