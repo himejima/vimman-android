@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.util.Log;
+import android.widget.Button;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,25 +27,34 @@ public class QuestionActivityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_question, container, false);
+        // return inflater.inflate(R.layout.fragment_question, container, false);
+        View view = inflater.inflate(R.layout.fragment_question, container, false);
+        Button btnSample = (Button) view.findViewById(R.id.button2);
+        btnSample.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new FetchQuestionTask().execute();
+            }
+        });
+        return view;
     }
 
-    /*
     public class FetchQuestionTask extends AsyncTask<Void, Void, Void> {
 
         private final String LOG_TAG = FetchQuestionTask.class.getSimpleName();
         @Override
         protected Void doInBackground(Void... params) {
+            Log.d(LOG_TAG, "pass1");
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
 
             String questionJsonStr = null;
 
             try {
-                URL url = new URL("http://example");
-
+                URL url = new URL("http://192.168.52.101/api/questions/");
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
+                Log.d(LOG_TAG, "pass2");
                 urlConnection.connect();
 
                 InputStream inputStream = urlConnection.getInputStream();
@@ -77,11 +87,9 @@ public class QuestionActivityFragment extends Fragment {
                         Log.e(LOG_TAG, "Error closing stream", e);
                     }
                 }
-
             }
 
             return null;
         }
     }
-    */
 }
