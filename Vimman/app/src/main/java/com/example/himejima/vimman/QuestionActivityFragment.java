@@ -24,6 +24,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import android.content.Intent;
+
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -73,6 +75,10 @@ public class QuestionActivityFragment extends Fragment {
                 }
                 // TODO: 結果画面への遷移
                 Log.d("result: ", rightFlag.toString());
+
+                Intent intent = new Intent(getActivity(), ResultActivity.class);
+                intent.putExtra("result", rightFlag.toString());
+                startActivity(intent);
             }
         });
 
