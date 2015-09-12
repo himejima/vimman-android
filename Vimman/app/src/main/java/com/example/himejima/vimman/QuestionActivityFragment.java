@@ -9,6 +9,10 @@ import android.view.ViewGroup;
 import android.util.Log;
 import android.widget.Button;
 
+import org.json.JSONException;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,11 +43,40 @@ public class QuestionActivityFragment extends Fragment {
         return view;
     }
 
-    public class FetchQuestionTask extends AsyncTask<Void, Void, Void> {
+    public class FetchQuestionTask extends AsyncTask<Void, Void, String[]> {
 
         private final String LOG_TAG = FetchQuestionTask.class.getSimpleName();
+
+        private String[] getQuestionDataFromJson(String questionStr) throws JSONException {
+            JSONObject questionJson = new JSONObject(questionStr);
+            JSONArray questionArray = questionJson.getJSONArray("result");
+
+            String[] resultStrs = new String[2];
+            for (int i = 0; i < questionArray.length(); i++) {
+                JSONObject test = questionArray.getJSONObject(i);
+                String content = test.getString("content");
+
+                // JSONObject answerObject = test.getJSONArray("answers").getJSONObject(0);
+                // String answer = answerObject.getString("content");
+                // Log.v(LOG_TAG, "Answer entry: " + answer);
+                JSONArray answerArray = test.getJSONArray("answers");
+                for (int j = 0; j < answerArray.length(); j++) {
+                    JSONObject answerObject = answerArray.getJSONObject(j);
+                    String answer = answerObject.getString("content");
+                    Log.v(LOG_TAG, "Answer Entry: " + answer);
+                }
+
+                resultStrs[i] = content;
+            }
+
+            for (String s : resultStrs) {
+                Log.v(LOG_TAG, "Question entry: " + s);
+            }
+            return resultStrs;
+        }
+
         @Override
-        protected Void doInBackground(Void... params) {
+        protected String[] doInBackground(Void... params) {
             Log.d(LOG_TAG, "pass1");
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
@@ -73,6 +106,8 @@ public class QuestionActivityFragment extends Fragment {
                     return null;
                 }
                 questionJsonStr = buffer.toString();
+
+                // Log.d(LOG_TAG, questionJsonStr);
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Error ", e);
                 return null;
@@ -87,6 +122,13 @@ public class QuestionActivityFragment extends Fragment {
                         Log.e(LOG_TAG, "Error closing stream", e);
                     }
                 }
+            }
+
+            try {
+                return getQuestionDataFromJson(questionJsonStr);
+            } catch (JSONException e) {
+                Log.e(LOG_TAG, e.getMessage());
+                e.printStackTrace();;
             }
 
             return null;
