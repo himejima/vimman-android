@@ -77,7 +77,8 @@ public class QuestionActivityFragment extends Fragment {
                 Log.d("result: ", rightFlag.toString());
 
                 Intent intent = new Intent(getActivity(), ResultActivity.class);
-                intent.putExtra("result", rightFlag.toString());
+                // intent.putExtra("result", rightFlag.toString());
+                intent.putExtra("result", rightFlag);
                 startActivity(intent);
             }
         });

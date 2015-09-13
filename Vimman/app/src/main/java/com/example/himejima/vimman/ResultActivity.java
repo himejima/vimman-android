@@ -9,7 +9,11 @@ import android.view.MenuItem;
 
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
+import android.content.Intent;
 
 public class ResultActivity extends Activity {
 
@@ -22,10 +26,49 @@ public class ResultActivity extends Activity {
         Bundle bundle = intent.getExtras();
 
         Set<String> set = bundle.keySet();
-        for (String entry : set) {
-            Log.d("ss", entry);
-            String val = (String)bundle.get(entry);
-            Log.d("aa", val);
+        Boolean result = (Boolean) bundle.get("result");
+        // Log.d("aaa", result.toString());
+
+//        for (String entry : set) {
+//            Log.d("ss", entry);
+//            String val = (String)bundle.get(entry);
+//            Log.d("aa", val);
+//        }
+        String answer_result;
+        if (result) {
+            answer_result = "o 正解です！";
+        } else {
+            answer_result = "x 残念、不正解です！";
+        }
+
+        TextView result_text = (TextView) findViewById(R.id.textView4);
+        result_text.setText(answer_result);
+
+        Button btn_continue = (Button) findViewById(R.id.button4);
+        Button btn_end = (Button) findViewById(R.id.button5);
+
+
+        btn_end.setOnClickListener(new ButtonClickListener());
+        btn_continue.setOnClickListener(new ButtonClickListener());
+    }
+
+    class ButtonClickListener implements View.OnClickListener {
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.button4:
+                    Log.v("onClick: ", "continue");
+                    //出題画面へ遷移
+                    // finish();
+                    Intent intent2 = new Intent(getApplication(), QuestionActivity.class);
+                    startActivity(intent2);
+                    break;
+                case R.id.button5:
+                    Log.v("onClick: ", "end");
+//                    // ホーム画面へ遷移する
+                    Intent intent = new Intent(getApplication(), MainActivity.class);
+                    startActivity(intent);
+                    break;
+            }
         }
     }
 
